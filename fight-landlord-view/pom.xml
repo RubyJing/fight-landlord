@@ -24,6 +24,11 @@
             <artifactId>PicqBotX</artifactId>
             <version>4.15.0.1052</version>
         </dependency>
+        <dependency>
+            <groupId>org.RubyJing</groupId>
+            <artifactId>fight-landlord-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>
