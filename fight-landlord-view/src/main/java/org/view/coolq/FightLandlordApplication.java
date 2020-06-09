@@ -2,6 +2,7 @@ package org.view.coolq;
 
 import cc.moecraft.icq.PicqBotX;
 import cc.moecraft.icq.PicqConfig;
+import org.view.coolq.listener.CoolGroupListener;
 import org.view.coolq.listener.CoolPrivateListener;
 
 /**
@@ -20,7 +21,7 @@ public class FightLandlordApplication {
         bot.addAccount("fight-landlord", "127.0.0.1", 31091);
 
         // 注册事件监听器, 可以注册多个监听器
-        bot.getEventManager().registerListeners(new CoolPrivateListener());
+        bot.getEventManager().registerListeners(new CoolPrivateListener(),new CoolGroupListener());
         bot.startBot();
     }
 }
