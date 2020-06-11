@@ -11,11 +11,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 卡工厂类
+ *
  * @author RubyJing
  * @version 1.0
  * @date 2020/6/10 14:42
  */
 public class CardFactory {
+
+    /**
+     * 初始化王卡
+     *
+     * @return List<GameCardVo>
+     */
+    public List<GameCardVo> initQueenCard() {
+        CardType cardType = this.findCardTypeById(CardTypeEnum.Queen);
+        return this.initGameCardVoByType(cardType);
+    }
 
     /**
      * 初始化常用卡
@@ -48,35 +60,27 @@ public class CardFactory {
             case SQUARE:
                 cardType = new SquareCard();
                 break;
+            case Queen:
+                cardType = new QueenCard();
+                break;
             default:
                 throw new IllegalArgumentException("不存在的卡牌类型");
         }
         return cardType;
     }
 
-//    /**
-//     * 初始化卡组
-//     *
-//     * @param cardTypeEnum 牌类型
-//     * @return List<Card>
-//     */
-//    public List<Card> initCards(CardTypeEnum cardTypeEnum) {
-//        switch (cardTypeEnum) {
-//            case SPADES:
-//                RED_PEACH:
-//                PLUM_FLOWER:
-//                SQUARE:
-//                break;
-//            default:
-//        }
-//    }
 
     private List<GameCardVo> initGameCardVoByType(CardType cardType) {
         if (cardType == null) {
             return null;
         }
         List<GameCardVo> gameCardVos = new ArrayList<>();
-        List<Card> cards = this.generateNormalCard();
+        List<Card> cards;
+        if ("王".equals(cardType.getCardType())) {
+            cards = this.generateNormalCard(true);
+        } else {
+            cards = this.generateNormalCard(false);
+        }
         for (Card card : cards) {
             GameCardVo gameCardVo = new GameCardVo();
             gameCardVo.setCardType(cardType);
@@ -87,13 +91,19 @@ public class CardFactory {
         return gameCardVos;
     }
 
+
     /**
-     * 生成 3~A,2的牌
+     * 生成卡牌牌
      *
      * @return
      */
-    private List<Card> generateNormalCard() {
-        int[] nums = new int[]{3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 20};
+    private List<Card> generateNormalCard(boolean isQueen) {
+        int[] nums;
+        if (isQueen) {
+            nums = new int[]{100, 101};
+        } else {
+            nums = new int[]{3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 20};
+        }
         List<Card> cards = new ArrayList<>(13);
         for (int num : nums) {
             Card card = new Card();
@@ -114,6 +124,12 @@ public class CardFactory {
                     break;
                 case 20:
                     card.setCardName("2");
+                    break;
+                case 100:
+                    card.setCardName("小");
+                    break;
+                case 101:
+                    card.setCardName("大");
                     break;
                 default:
                     card.setCardName(String.valueOf(num));

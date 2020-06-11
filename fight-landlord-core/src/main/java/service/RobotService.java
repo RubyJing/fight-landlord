@@ -1,6 +1,8 @@
 package service;
 
+import entity.Game;
 import entity.GameCardVo;
+import entity.Player;
 
 import java.util.List;
 
@@ -17,4 +19,10 @@ public interface RobotService {
      * @return List<GameCardVo>
      */
     List<GameCardVo> initCard();
+
+    /**
+     * 给玩家发牌
+     * @param game 游戏
+     */
+    void licensing(Game game);
 }
