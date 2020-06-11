@@ -1,7 +1,7 @@
 package service;
 
+import card.CardFactory;
 import card.CardTypeEnum;
-import entity.Card;
 import entity.Game;
 import entity.GameCardVo;
 import entity.Player;
@@ -19,19 +19,6 @@ import java.util.Random;
  */
 @Slf4j
 public class RobotServiceImpl implements RobotService {
-
-    CardFactory cardFactory = new CardFactory();
-
-    @Override
-    public List<GameCardVo> initCard() {
-        List<GameCardVo> gameCardVos = new ArrayList<>();
-        gameCardVos.addAll(cardFactory.initGeneralCard(CardTypeEnum.RED_PEACH));
-        gameCardVos.addAll(cardFactory.initGeneralCard(CardTypeEnum.SPADES));
-        gameCardVos.addAll(cardFactory.initGeneralCard(CardTypeEnum.PLUM_FLOWER));
-        gameCardVos.addAll(cardFactory.initGeneralCard(CardTypeEnum.SQUARE));
-        gameCardVos.addAll(cardFactory.initQueenCard());
-        return gameCardVos;
-    }
 
     @Override
     public void licensing(Game game) {

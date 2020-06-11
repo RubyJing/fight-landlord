@@ -30,7 +30,7 @@ public class ImageServiceImpl implements ImageService {
         StringBuilder keyBoard = new StringBuilder();
         for (GameCardVo gameCardVo : gameCardVos) {
             cardImages.append(this.gameCardImage(gameCardVo));
-            keyBoard.append("  ❅"+gameCardVo.getSubscript()+"");
+            keyBoard.append(" ❅"+gameCardVo.getSubscript()+"");
         }
         return cardImages.append("\n").append(keyBoard).toString();
     }
