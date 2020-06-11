@@ -1,5 +1,6 @@
 package org.view.coolq;
 
+import card.CardFactory;
 import cc.moecraft.icq.PicqBotX;
 import cc.moecraft.icq.PicqConfig;
 import org.view.coolq.listener.CoolGroupListener;
@@ -22,6 +23,8 @@ public class FightLandlordApplication {
 
         // 注册事件监听器, 可以注册多个监听器
         bot.getEventManager().registerListeners(new CoolPrivateListener(),new CoolGroupListener());
+        CardFactory cardFactory = new CardFactory();
         bot.startBot();
+
     }
 }
