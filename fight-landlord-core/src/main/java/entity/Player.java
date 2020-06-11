@@ -31,5 +31,5 @@ public class Player {
     /**
      * 卡牌
      */
-    private List<Card> cards;
+    private List<GameCardVo> cards;
 }

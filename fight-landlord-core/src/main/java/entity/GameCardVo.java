@@ -2,7 +2,6 @@ package entity;
 
 import lombok.Data;
 
-import java.util.List;
 
 /**
  * 游戏卡牌包装类
@@ -25,4 +24,9 @@ public class GameCardVo {
      * 卡牌
      */
     private Card card;
+
+    /**
+     * 牌 下标
+     */
+    private String subscript;
 }
