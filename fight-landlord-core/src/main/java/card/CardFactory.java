@@ -1,4 +1,4 @@
-package service;
+package card;
 
 import Sequence.CardSequence;
 import Sequence.GameCardSequence;
@@ -18,6 +18,26 @@ import java.util.List;
  * @date 2020/6/10 14:42
  */
 public class CardFactory {
+
+    public CardFactory() {
+        initCardPool = initCard();
+    }
+
+    /**
+     * 游戏初始化牌组
+     */
+    public static List<GameCardVo> initCardPool = new ArrayList<>(54);
+
+
+    public List<GameCardVo> initCard() {
+        List<GameCardVo> gameCardVos = new ArrayList<>();
+        gameCardVos.addAll(this.initGeneralCard(CardTypeEnum.RED_PEACH));
+        gameCardVos.addAll(this.initGeneralCard(CardTypeEnum.SPADES));
+        gameCardVos.addAll(this.initGeneralCard(CardTypeEnum.PLUM_FLOWER));
+        gameCardVos.addAll(this.initGeneralCard(CardTypeEnum.SQUARE));
+        gameCardVos.addAll(this.initQueenCard());
+        return gameCardVos;
+    }
 
     /**
      * 初始化王卡
