@@ -25,7 +25,11 @@ public enum  CardTypeEnum {
     /**
      * 方块
      */
-    SQUARE(4L)
+    SQUARE(4L),
+    /**
+     * 王
+     */
+    Queen(5L)
     ;
 
     private Long id;
