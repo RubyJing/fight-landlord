@@ -3,6 +3,7 @@ package org.view.coolq.game;
 import entity.Game;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -20,13 +21,15 @@ public class GamePool {
 
     /**
      * 获取对局
+     *
      * @param groupId 群Id
      * @return Game
      */
     public static Game getGame(Long groupId) {
         if (games != null && games.size() != 0) {
-            if (games.iterator().hasNext()) {
-                if (games.iterator().next().getGroupId().equals(groupId)) {
+            Iterator<Game> gameIterator = games.iterator();
+            while (gameIterator.hasNext()) {
+                if (gameIterator.next().getGroupId().equals(groupId)) {
                     return games.iterator().next();
                 }
             }
@@ -36,19 +39,18 @@ public class GamePool {
 
     /**
      * 新增对局
+     *
      * @param game 对局
      */
     public static void addGame(Game game) {
-        if (games == null || games.size() == 0) {
-            assert games != null;
-            games.add(game);
-        } else {
+        if (games != null && games.size() != 0) {
             if (games.iterator().hasNext()) {
                 if (games.iterator().next().getGroupId().equals(game.getGroupId())) {
                     games.remove(game);
-                    games.add(game);
                 }
             }
         }
+        assert games != null;
+        games.add(game);
     }
 }
