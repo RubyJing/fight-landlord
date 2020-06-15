@@ -16,4 +16,13 @@ public interface RobotService {
      * @param game 游戏
      */
     void licensing(Game game);
+
+    /**
+     * 分配角色（地主/农民）
+     * @param game 对局
+     * @param playerQq 玩家qq
+     */
+    void getLandLord(Game game,long playerQq);
+
+
 }
