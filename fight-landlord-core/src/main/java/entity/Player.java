@@ -1,8 +1,8 @@
 package entity;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import role.Role;
 
 import java.util.List;
 
@@ -16,18 +16,23 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class Player {
-    private Long id;
-
+    private Integer id;
+    /**
+     * 玩家QQ号
+     */
+    private long qqNum;
+    /**
+     * 是否好友
+     */
+    private boolean isBuddy;
     /**
      * 玩家名称
      */
     private String playerName;
-
     /**
      * 角色
      */
     private Role role;
-
     /**
      * 卡牌
      */

@@ -26,7 +26,7 @@ public class Card {
     /**
      * 是否打出
      */
-    private Boolean isHit = false;
+    private Boolean isHit;
 
 
 }
