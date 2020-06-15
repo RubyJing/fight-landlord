@@ -1,10 +1,8 @@
 package service;
 
 import entity.GameCardVo;
-import javafx.print.Printer;
 import lombok.extern.slf4j.Slf4j;
 
-import java.awt.*;
 import java.util.List;
 
 /**
@@ -21,18 +19,19 @@ public class ImageServiceImpl implements ImageService {
         cardImage.append(gameCardVo.getCardType().getGraph());
         cardImage.append(gameCardVo.getCard().getCardName());
         cardImage.append("|");
+        if (gameCardVo.getSubscript() != null) {
+            cardImage.append(gameCardVo.getSubscript()+" ");
+        }
         return cardImage.toString();
     }
 
     @Override
     public String gameCardsImage(List<GameCardVo> gameCardVos) {
         StringBuilder cardImages = new StringBuilder();
-        StringBuilder keyBoard = new StringBuilder();
         for (GameCardVo gameCardVo : gameCardVos) {
             cardImages.append(this.gameCardImage(gameCardVo));
-            keyBoard.append(" ❅"+gameCardVo.getSubscript()+"");
         }
-        return cardImages.append("\n").append(keyBoard).toString();
+        return cardImages.toString();
     }
 
 
