@@ -20,9 +20,15 @@ public interface ImageService {
     String gameCardImage(GameCardVo gameCardVo);
 
     /**
-     * 包装牌组样式
+     * 包装牌组 和 键盘符样式
      * @param gameCardVos 牌vos
      * @return String
      */
     String gameCardsImage(List<GameCardVo> gameCardVos);
+
+    /**
+     * 加入键盘标识
+     * @param gameCardVos 牌vos
+     */
+    void addSubscript(List<GameCardVo> gameCardVos);
 }

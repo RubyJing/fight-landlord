@@ -25,6 +25,7 @@ public class ImageServiceImpl implements ImageService {
         return cardImage.toString();
     }
 
+
     @Override
     public String gameCardsImage(List<GameCardVo> gameCardVos) {
         StringBuilder cardImages = new StringBuilder();
@@ -33,6 +34,16 @@ public class ImageServiceImpl implements ImageService {
         }
         return cardImages.toString();
     }
+
+
+    @Override
+    public void addSubscript(List<GameCardVo> gameCardVos) {
+        String[] keyBoards = new String[]{"⓵", "⓶", "⓷", "⓸", "⓹", "⓺", "⓻", "⓼", "⓽", "⓿", "Ⓠ", "Ⓦ", "Ⓔ", "Ⓡ", "Ⓣ", "Ⓨ", "Ⓤ", "Ⓘ", "Ⓞ", "Ⓟ"};
+        for (int i = 0; i < gameCardVos.size(); i++) {
+            gameCardVos.get(i).setSubscript(keyBoards[i]);
+        }
+    }
+
 
 
 }

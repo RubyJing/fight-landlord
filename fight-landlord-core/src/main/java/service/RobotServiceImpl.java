@@ -30,7 +30,7 @@ public class RobotServiceImpl implements RobotService {
                 cards.add(game.getCards().get(randomNum));
                 game.getCards().remove(randomNum);
             }
-            this.sortAscWithSubscriptByNum(cards);
+            this.sortAscByNum(cards);
             player.setCards(cards);
         }
     }
@@ -42,7 +42,7 @@ public class RobotServiceImpl implements RobotService {
             if (player.getQqNum() == playerQq) {
                 player.setRole(new LandLord());
                 player.getCards().addAll(game.getCards());
-                this.sortAscWithSubscriptByNum(player.getCards());
+                this.sortAscByNum(player.getCards());
             } else {
                 player.setRole(new Farmer());
             }
@@ -50,16 +50,12 @@ public class RobotServiceImpl implements RobotService {
     }
 
     /**
-     * 牌组通过数值排序，并标识下标
+     * 牌组通过数值排序
      *
      * @param gameCardVos 牌组voList
      */
-    private void sortAscWithSubscriptByNum(List<GameCardVo> gameCardVos) {
+    private void sortAscByNum(List<GameCardVo> gameCardVos) {
         gameCardVos.sort(Comparator.comparingInt(a -> a.getCard().getCardNum()));
-        String[] keyBoards = new String[]{"⓵", "⓶", "⓷", "⓸", "⓹", "⓺", "⓻", "⓼", "⓽", "⓿", "Ⓠ", "Ⓦ", "Ⓔ", "Ⓡ", "Ⓣ", "Ⓨ", "Ⓤ", "Ⓘ", "Ⓞ", "Ⓟ"};
-        for (int i = 0; i < gameCardVos.size(); i++) {
-            gameCardVos.get(i).setSubscript(keyBoards[i]);
-        }
     }
 
 
