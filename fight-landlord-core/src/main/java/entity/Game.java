@@ -49,4 +49,11 @@ public class Game {
      * 线程数
      */
     private int thread;
+
+    /**
+     * 不抢地主数
+     */
+    private int noChooseLandLord;
+
+
 }
