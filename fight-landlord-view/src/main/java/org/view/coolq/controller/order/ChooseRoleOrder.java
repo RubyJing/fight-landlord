@@ -2,8 +2,12 @@ package org.view.coolq.controller.order;
 
 import entity.Game;
 import entity.Player;
+import org.view.coolq.entity.Response;
+import org.view.coolq.game.GamePool;
 import org.view.coolq.output.OutputInfo;
 import role.Farmer;
+import service.ImageService;
+import service.ImageServiceImpl;
 import service.RobotService;
 import service.RobotServiceImpl;
 
@@ -19,33 +23,65 @@ import java.util.List;
 public class ChooseRoleOrder extends AbstractOrder implements Order {
 
     private RobotService robotService = new RobotServiceImpl();
+    private ImageService imageService = new ImageServiceImpl();
 
-    public ChooseRoleOrder(Game game, long playerQq) {
-        super(game, playerQq);
+    public ChooseRoleOrder(Game game, long playerQq, String message) {
+        super(game, playerQq, message);
     }
+
 
     @Override
     public void execute() {
         try {
-            String order = getOrder();
+            String order = getMessage();
             List<Player> players = game.getPlayers();
-            boolean chooseRole = true;
-            Player player = null;
             for (Player e : players) {
                 if (e.getRole() == null) {
-                    chooseRole = false;
-                    player = e;
+                    GamePool.addOrUpdateGameCurrPlayer(e, game.getGroupId());
                     break;
                 }
             }
-            if ("begin".equals(order) || !chooseRole) {
-                assert player != null;
-                if ("是".equals(order)) {
-                    robotService.getLandLord(game,super.playerQq);
-                } else if ("否".equals(order)) {
-                    player.setRole(new Farmer());
+            Player currPlayer = GamePool.getCurrPlayer(game.getGroupId());
+            //开头询问
+            if ("begin".equals(order)) {
+                assert currPlayer != null;
+                OutputInfo.messageQueue.put(new Response(game.getGroupId(), super.playerQq,
+                        currPlayer.getPlayerName() + "是否抢地主：请回答“是”或者“否”"));
+            } else {
+                boolean chooseRole = false;
+                for (Player e : players) {
+                    if (e.getRole() == null) {
+                        chooseRole = true;
+                        break;
+                    }
                 }
-                OutputInfo.messageQueue.put(player.getPlayerName() + "是否抢地主:请回答“是”或者“否”");
+                assert currPlayer != null;
+                if (chooseRole && playerQq == currPlayer.getQqNum()) {
+                    if ("是".equals(order)) {
+                        OutputInfo.messageQueue.put(new Response(game.getGroupId(), super.playerQq,
+                                "显示最后三张牌：" + imageService.gameCardsImage(game.getCards())));
+                        robotService.getLandLord(game, super.playerQq);
+                        imageService.addSubscript(currPlayer.getCards());
+                        OutputInfo.messageQueue.put(new Response(game.getGroupId(), super.playerQq,
+                                currPlayer.getPlayerName() + "成为地主"));
+                        OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(), super.playerQq, "您的角色是地主："));
+                        OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(), super.playerQq, imageService.gameCardsImage(currPlayer.getCards())));
+                    } else if ("否".equals(order)) {
+                        currPlayer.setRole(new Farmer());
+                        game.setNoChooseLandLord(game.getNoChooseLandLord() + 1);
+                        if (game.getNoChooseLandLord() == 3) {
+                            game.setNoChooseLandLord(0);
+                            for (Player player : game.getPlayers()) {
+                                player.setRole(null);
+                            }
+                            OutputInfo.messageQueue.put(new Response(game.getGroupId(), super.playerQq,
+                                    "======没有人抢地主，对局结束，重新发牌====="));
+                            game.getGroupQueue().put("licensing");
+                        } else {
+                            game.getGroupQueue().put("begin");
+                        }
+                    }
+                }
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

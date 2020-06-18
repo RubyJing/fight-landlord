@@ -12,15 +12,30 @@ import entity.Game;
 public class Invoker {
 
     private Game game;
-    private ChooseRoleOrder chooseRoleOrder;
+    private String message;
 
-    public Invoker(Game game,long playerQq) {
+    private ChooseRoleOrder chooseRoleOrder;
+    private StartLicensingOrder startLicensingOrder;
+
+    public Invoker(Game game, long playerQq, String message) {
         this.game = game;
-        chooseRoleOrder = new ChooseRoleOrder(game,playerQq);
+        this.message = message;
+        startLicensingOrder = new StartLicensingOrder(game, playerQq, message);
+        chooseRoleOrder = new ChooseRoleOrder(game, playerQq, message);
     }
 
     public void execute() {
-        chooseRoleOrder.execute();
+        switch (message) {
+            case "licensing":
+                startLicensingOrder.execute();
+                break;
+            case "begin":
+            case "是":
+            case "否":
+                chooseRoleOrder.execute();
+                break;
+            default:
+        }
     }
 
     public Game getGame() {

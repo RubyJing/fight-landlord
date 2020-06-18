@@ -3,8 +3,6 @@ package org.view.coolq.controller.order;
 import entity.Game;
 
 
-import java.util.concurrent.BlockingQueue;
-
 /**
  * 命令
  *
@@ -16,14 +14,23 @@ public abstract class AbstractOrder implements Order {
 
     protected Game game;
     protected long playerQq;
+    protected String message;
 
-    protected String getOrder() throws InterruptedException {
-        BlockingQueue<String> blockingQueue = game.getGroupQueue();
-        return blockingQueue.take();
-    }
-
-    public AbstractOrder(Game game,long playerQq) {
+    public AbstractOrder(Game game, long playerQq, String message) {
         this.game = game;
         this.playerQq = playerQq;
+        this.message = message;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public long getPlayerQq() {
+        return playerQq;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

@@ -34,12 +34,14 @@ public class StartLicensingOrder extends AbstractOrder implements Order {
             String order = getMessage();
             if ("licensing".equals(order)) {
                 OutputInfo.messageQueue.put(new Response(game.getGroupId(),null,"===========开始发牌============"));
-                OutputInfo.messageQueue.put(new Response(game.getGroupId(),null,"温馨提示：为了方便出牌，请根据牌后对应的键盘标识出牌"));
+                OutputInfo.messageQueue.put(new Response(game.getGroupId(),null,
+                        "温馨提示：为了方便出牌，请根据牌后对应的键盘标识出牌(⓿是数字0，Ⓞ是字母o"));
                 game.setCards(new ArrayList<>(CardFactory.initCardPool));
                 robotService.licensing(game);
                 for (int i = game.getPlayers().size(); i > 0; i--) {
                     int index = i - 1;
                     game.getPlayers().get(index).setId(i);
+                    imageService.addSubscript(game.getPlayers().get(index).getCards());
                     OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(),game.getPlayers().get(index).getQqNum()
                             , imageService.gameCardsImage(game.getPlayers().get(index).getCards())));
                 }
