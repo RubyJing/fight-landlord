@@ -7,9 +7,20 @@ package org.view.coolq.entity;
  * @date 2020/6/15 17:16
  */
 public class Response {
+
+    private Long groupId;
+
     private Long playerQq;
 
     private String message;
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
 
     public Long getPlayerQq() {
         return playerQq;
@@ -27,7 +38,8 @@ public class Response {
         this.message = message;
     }
 
-    public Response(Long playerQq, String message) {
+    public Response(Long groupId, Long playerQq, String message) {
+        this.groupId = groupId;
         this.playerQq = playerQq;
         this.message = message;
     }

@@ -1,5 +1,6 @@
 package org.view.coolq.game;
 
+import cc.moecraft.icq.event.events.message.EventGroupMessage;
 import entity.Game;
 import entity.Player;
 import org.view.coolq.entity.GameCurrPlayer;
@@ -25,6 +26,11 @@ public class GamePool {
      * 对局当前操作者缓存池
      */
     public static List<GameCurrPlayer> currPlayers = new ArrayList<>();
+
+    /**
+     * 群消息
+     */
+    public static EventGroupMessage eventGroupMessage;
 
     /**
      * 获取当前群当前操作玩家

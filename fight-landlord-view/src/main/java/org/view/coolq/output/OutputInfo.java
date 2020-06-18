@@ -14,7 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class OutputInfo {
 
-    public static BlockingQueue<String> messageQueue = new LinkedBlockingQueue<>();
+    public static BlockingQueue<Response> messageQueue = new LinkedBlockingQueue<>();
 
     public static BlockingQueue<Response> privateMessageQueue = new LinkedBlockingQueue<>();
 
