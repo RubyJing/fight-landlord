@@ -1,6 +1,9 @@
 package service;
 
 import entity.Game;
+import entity.GameCardVo;
+
+import java.util.List;
 
 
 /**
@@ -23,6 +26,13 @@ public interface RobotService {
      * @param playerQq 玩家qq
      */
     void getLandLord(Game game,long playerQq);
+
+    /**
+     * 牌组通过数值排序
+     *
+     * @param gameCardVos 牌组voList
+     */
+    void sortAscByNum(List<GameCardVo> gameCardVos);
 
 
 }

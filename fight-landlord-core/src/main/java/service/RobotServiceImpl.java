@@ -49,12 +49,9 @@ public class RobotServiceImpl implements RobotService {
         }
     }
 
-    /**
-     * 牌组通过数值排序
-     *
-     * @param gameCardVos 牌组voList
-     */
-    private void sortAscByNum(List<GameCardVo> gameCardVos) {
+
+    @Override
+    public void sortAscByNum(List<GameCardVo> gameCardVos) {
         gameCardVos.sort(Comparator.comparingInt(a -> a.getCard().getCardNum()));
     }
 
