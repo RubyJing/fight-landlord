@@ -21,5 +21,7 @@ public class PrintTest {
         Print.PN("加粗倾斜", Print.BOLD, Print.ITATIC);
         Print.PN("黄底白字下划线", Print.WHITE, Print.YELLOW_BACKGROUND, Print.UNDERLINE);
         Print.PN("红字颜色反转", Print.RED, Print.REVERSE);
+        System.out.println("♡".length());
+        System.out.println("♧".length());
     }
 }
