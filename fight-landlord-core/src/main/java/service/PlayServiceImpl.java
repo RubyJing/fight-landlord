@@ -7,10 +7,7 @@ import entity.Game;
 import entity.GameCardVo;
 import entity.Player;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -84,18 +81,10 @@ public class PlayServiceImpl implements PlayService {
 
     @Override
     public boolean isFightLandlordRule(Game game, List<GameCardVo> gameCardVos, String keyBoards) {
-        List<GameCardVo> currGameCards = game.getCurrCard();
-        if (currGameCards == null || currGameCards.size() == 0) {
-            return true;
-        }
-        if (gameCardVos == null || gameCardVos.size() == 0) {
-            return true;
-        }
         String[] input = keyBoards.trim().split("");
         if (input.length == 0) {
             return true;
         }
-
         List<Card> cards = new ArrayList<>();
         for (String s : input) {
             for (GameCardVo gameCardVo : gameCardVos) {
@@ -104,13 +93,13 @@ public class PlayServiceImpl implements PlayService {
                 }
             }
         }
-
-        if (isFightLandlordCardRule(cards) != null) {
-            return true;
+        if (isFightLandlordCardRule(cards) == null) {
+            return false;
         }
 
+        List<GameCardVo> currGameCards = game.getCurrCard();
 
-        return false;
+        return true;
     }
 
     /**
@@ -174,11 +163,9 @@ public class PlayServiceImpl implements PlayService {
 
         //六张牌:四带二
         if (cards.size() == SendCardType.FOUR_BOMB_WITH_TWO.getCardNum()) {
-           //todo 重新四带二的判断逻辑
-
-                    return SendCardType.FOUR_BOMB_WITH_TWO;
-
-
+            if (isFourBombWithTwo(cards)) {
+                return SendCardType.FOUR_BOMB_WITH_TWO;
+            }
         }
 
         //顺子：大于五张牌，小于13张牌
@@ -200,17 +187,100 @@ public class PlayServiceImpl implements PlayService {
 
         //飞机带翅膀：三顺＋同数量的单牌（或同数量的对牌）
         if (cards.size() > SendCardType.MORE_THREE_WITH.getCardNum()) {
-            //todo 飞机带翅膀牌组判断
+            if (isMoreThreeWith(cards)) {
+                return SendCardType.MORE_THREE_WITH;
+            }
+
         }
 
         return null;
     }
 
     /**
-     * 是否是三带一对
+     * 是否是 飞机带翅膀(三顺带1个/1对)
      *
-     * @param cards
-     * @return
+     * @param cards 出牌
+     * @return boolean
+     */
+    protected boolean isMoreThreeWith(List<Card> cards) {
+        if (cards == null || cards.size() < 8) {
+            return false;
+        }
+        Map<Integer, Integer> sendCardVos = new HashMap<>();
+        for (Card card : cards) {
+            int count = 0;
+            for (Card card2 : cards) {
+                if (card.getCardNum() == card2.getCardNum()) {
+                    count++;
+                }
+            }
+            sendCardVos.put(card.getCardNum(), count);
+        }
+        //分析牌组
+        if (sendCardVos.size() == 0) {
+            return false;
+        }
+        Set<Map.Entry<Integer, Integer>> entrySet = sendCardVos.entrySet();
+        int threeCount = 0;
+        int oneCount = 0;
+        int twoCount = 0;
+        for (Map.Entry<Integer, Integer> entry : entrySet) {
+            if (entry.getValue() == 1) {
+                oneCount++;
+            }
+            if (entry.getValue() == 3) {
+                threeCount++;
+            }
+            if (entry.getValue() == 2) {
+                twoCount++;
+            }
+        }
+        if (threeCount < 2) {
+            return false;
+        }
+        List<Map.Entry<Integer, Integer>> entryList = sendCardVos.entrySet().stream().filter(e -> e.getValue() == 3).sorted(Map.Entry.comparingByKey()).collect(Collectors.toList());
+        for (int i = 1; i < entryList.size(); i++) {
+            if (entryList.get(i).getKey() != entryList.get(i - 1).getKey() + 1) {
+                return false;
+            }
+        }
+        if (threeCount == oneCount && cards.size() == threeCount * 3 + oneCount) {
+            return true;
+        }
+        return threeCount == twoCount && cards.size() == threeCount * 3 + twoCount * 2;
+    }
+
+    /**
+     * 是否是四带二
+     *
+     * @param cards 出牌
+     * @return boolean
+     */
+    protected boolean isFourBombWithTwo(List<Card> cards) {
+        if (cards == null || cards.size() != 6) {
+            return false;
+        }
+        boolean isFourBombWithTwo = false;
+        for (int i = 0; i < cards.size(); i++) {
+            int count = 0;
+            for (Card card : cards) {
+                if (cards.get(i).getCardNum() == card.getCardNum()) {
+                    count++;
+                }
+            }
+            if (count == 4) {
+                isFourBombWithTwo = true;
+                break;
+            }
+        }
+        return isFourBombWithTwo;
+    }
+
+    /**
+     * 是否是三带一
+     *
+     * @param cards 出牌
+     * @return boolean
      */
     protected boolean isThreeWithOne(List<Card> cards) {
         if (cards == null || cards.size() != 4) {
@@ -279,6 +349,7 @@ public class PlayServiceImpl implements PlayService {
 
     /**
      * 去重和排序
+     *
      * @param cards 牌list
      * @return List<Card>
      */
