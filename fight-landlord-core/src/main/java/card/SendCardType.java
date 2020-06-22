@@ -60,8 +60,7 @@ public enum  SendCardType {
      */
     MORE_THREE_WITH(7,false,"飞机带翅膀"),
 
-
-            ;
+    ;
 
     /**
      * 出牌的数量
