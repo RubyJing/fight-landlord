@@ -14,6 +14,23 @@ import java.util.List;
  */
 public interface PlayService {
 
+
+    /**
+     * 玩家出牌
+     *
+     * @param game      对局
+     * @param playQq    玩家qq
+     * @param keyBoards 键盘标识
+     * @return 出牌图像包装
+     */
+    String playerSendCard(Game game, long playQq, String keyBoards);
+
+    /**
+     * 不出牌
+     * @param game 对局
+     */
+    void noSendCard(Game game);
+
     /**
      * 判断键盘输入是否合法
      * @param game 游戏对局
@@ -56,14 +73,4 @@ public interface PlayService {
     List<GameCardVo> getAllNotHitCards(List<GameCardVo> gameCardVos);
 
 
-
-    /**
-     * 玩家出牌
-     *
-     * @param game      对局
-     * @param playQq    玩家qq
-     * @param keyBoards 键盘标识
-     * @return 出牌图像包装
-     */
-    String playerSendCard(Game game, long playQq, String keyBoards);
 }

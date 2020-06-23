@@ -21,6 +21,11 @@ public class PlayServiceImpl implements PlayService {
     private SendCardFactory sendCardFactory = new SendCardFactory();
 
     @Override
+    public void noSendCard(Game game) {
+        game.setNoSendCardCount(game.getNoSendCardCount() + 1);
+    }
+
+    @Override
     public boolean isKeyBoardsInputLegal(Game game, List<GameCardVo> gameCardVos, String keyBoards) {
         if (!isKeyBoard(keyBoards)) {
             return false;
@@ -103,7 +108,7 @@ public class PlayServiceImpl implements PlayService {
         //与已出牌的对比
         List<GameCardVo> currGameCards = game.getCurrCard();
         if (currGameCards != null && currGameCards.size() != 0) {
-            return sendCardFactory.isSendCard(sendCardType,cards, currGameCards,game.getCurrSendCardType());
+            return sendCardFactory.isSendCard(sendCardType, cards, currGameCards, game.getCurrSendCardType());
         }
 
         return true;
@@ -145,6 +150,7 @@ public class PlayServiceImpl implements PlayService {
         currPlayer.setCards(playerCardsVos);
         game.setCurrCard(isHitVos);
         game.setCurrSendCardType(sendCardFactory.isFightLandlordCardRule(currCard));
+        game.setNoSendCardCount(0);
         return game.getCurrSendCardType().getName() + "：" + imageService.gameCardsImage(game.getCurrCard(), false);
     }
 }
