@@ -1,7 +1,9 @@
 package service;
 
+import com.sun.istack.internal.Nullable;
 import entity.Game;
 import entity.GameCardVo;
+import entity.Player;
 
 import java.util.List;
 
@@ -14,6 +16,22 @@ import java.util.List;
  */
 public interface PlayService {
 
+
+
+    /**
+     * 牌局当前操作人
+     * @param game 牌局
+     * @param landLord 地主
+     * @return Player
+     */
+    Player gameCurrPlayer(Game game,@Nullable Player landLord);
+
+    /**
+     * 获取地主
+     * @param game 牌局
+     * @return Player
+     */
+    Player getGameLandLord(Game game);
 
     /**
      * 玩家出牌

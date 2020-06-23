@@ -116,6 +116,46 @@ public class PlayServiceImpl implements PlayService {
 
 
     @Override
+    public Player gameCurrPlayer(Game game, Player landLord) {
+        int currPlayerId;
+        if (landLord == null) {
+            currPlayerId = game.getCurrPlayer().getId();
+        } else {
+            currPlayerId = landLord.getId();
+        }
+        int sendCardCount = game.getNoSendCardCount();
+        if (sendCardCount == 2) {
+            return game.getCurrPlayer();
+        }
+        int gameCurr;
+        //1-2,2-3,3-1
+        int sum = currPlayerId + sendCardCount;
+        if (sum < 3) {
+            gameCurr = sum + 1;
+        } else if (sum == 3) {
+            gameCurr = 1;
+        } else {
+            gameCurr = sum % 3 + 1;
+        }
+        for (Player player : game.getPlayers()) {
+            if (player.getId() == gameCurr) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Player getGameLandLord(Game game) {
+        for (Player player : game.getPlayers()) {
+            if ("地主".equals(player.getRole().getRoleName())) {
+                return player;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public String playerSendCard(Game game, long playQq, String keyBoards) {
         String[] input = keyBoards.trim().split("");
         if (input.length == 0) {
@@ -137,17 +177,19 @@ public class PlayServiceImpl implements PlayService {
         List<GameCardVo> playerCardsVos = currPlayer.getCards();
         List<GameCardVo> isHitVos = new ArrayList<>();
         List<Card> currCard = new ArrayList<>();
-        for (GameCardVo card : playerCardsVos) {
-            for (String s : input) {
+        for (String s : input) {
+            for (GameCardVo card : playerCardsVos) {
                 if (card.getSubscriptValue().equals(s)) {
                     card.setSubscriptValue("");
                     card.setIsHit(true);
                     isHitVos.add(card);
                     currCard.add(card.getCard());
+                    break;
                 }
             }
         }
         currPlayer.setCards(playerCardsVos);
+        game.setCurrPlayer(currPlayer);
         game.setCurrCard(isHitVos);
         game.setCurrSendCardType(sendCardFactory.isFightLandlordCardRule(currCard));
         game.setNoSendCardCount(0);

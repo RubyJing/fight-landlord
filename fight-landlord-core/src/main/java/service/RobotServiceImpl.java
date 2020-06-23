@@ -38,6 +38,7 @@ public class RobotServiceImpl implements RobotService {
     @Override
     public void getLandLord(Game game, long playerQq) {
         List<Player> players = game.getPlayers();
+        game.setNoChooseLandLord(0);
         for (Player player : players) {
             if (player.getQqNum() == playerQq) {
                 player.setRole(new LandLord());
@@ -47,6 +48,8 @@ public class RobotServiceImpl implements RobotService {
                 player.setRole(new Farmer());
             }
         }
+        game.setCards(null);
+        game.setCurrPlayer(null);
     }
 
 

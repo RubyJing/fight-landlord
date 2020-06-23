@@ -208,7 +208,7 @@ public class SendCardFactory {
         if (sendCardType != currSendCardType) {
             return false;
         }
-        return currCards.get(0).getCardNum() <= sendCards.get(0).getCardNum();
+        return currCards.get(0).getCardNum() < sendCards.get(0).getCardNum();
     }
 
 
