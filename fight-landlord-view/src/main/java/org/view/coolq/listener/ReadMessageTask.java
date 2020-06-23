@@ -4,7 +4,9 @@ import cc.moecraft.icq.event.events.message.EventGroupMessage;
 import cc.moecraft.icq.event.events.message.EventMessage;
 import entity.Game;
 import org.view.coolq.controller.order.Invoker;
+import org.view.coolq.entity.PrivateMessage;
 import org.view.coolq.game.GamePool;
+import org.view.coolq.output.InputInfo;
 
 
 /**
@@ -30,6 +32,13 @@ public class ReadMessageTask implements Runnable {
                 Invoker invoker = new Invoker(game, GamePool.eventGroupMessage.getSenderId(), message);
                 invoker.execute();
             }
+
+            PrivateMessage privateMessage = InputInfo.messageQueue.poll();
+            if (privateMessage != null) {
+                Invoker invoker = new Invoker(privateMessage.getGame(), privateMessage.getPlayerQq(), privateMessage.getMessage());
+                invoker.execute();
+            }
+
         }
     }
 }

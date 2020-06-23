@@ -33,6 +33,44 @@ public class GamePool {
     public static EventGroupMessage eventGroupMessage;
 
     /**
+     * 通过玩家qq号，获取玩家信息
+     *
+     * @param qqNum qq号
+     * @return Game
+     */
+    public static Player getPlayerByPlayerQq(long qqNum) {
+        if (games.size() != 0) {
+            for (Game game : games) {
+                for (Player player : game.getPlayers()) {
+                    if (player.getQqNum() == qqNum) {
+                        return player;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 通过玩家qq号，获取游戏对局
+     *
+     * @param qqNum qq号
+     * @return Game
+     */
+    public static Game getGameByPlayerQq(long qqNum) {
+        if (games.size() != 0) {
+            for (Game game : games) {
+                for (Player player : game.getPlayers()) {
+                    if (player.getQqNum() == qqNum) {
+                        return game;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * 获取当前群当前操作玩家
      *
      * @param groupId 群qq
