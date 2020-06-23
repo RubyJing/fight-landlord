@@ -26,7 +26,18 @@ public class GameCardVo {
     private Card card;
 
     /**
-     * 牌 下标
+     * 牌 下标样式
      */
     private String subscript;
+
+    /**
+     * 牌 下标样式值
+     */
+    private String subscriptValue;
+
+
+    /**
+     * 是否打出
+     */
+    private Boolean isHit = false;
 }

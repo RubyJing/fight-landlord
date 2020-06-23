@@ -16,6 +16,9 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class Player {
+    /**
+     * 牌桌位置：1-2,2-3,3-1
+     */
     private Integer id;
     /**
      * 玩家QQ号

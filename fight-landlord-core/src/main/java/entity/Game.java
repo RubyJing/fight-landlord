@@ -1,5 +1,6 @@
 package entity;
 
+import card.SendCardType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * 游戏类
+ * 游戏对局类
+ *
  * @author RubyJing
  * @version 1.0
  * @date 2020/6/10 10:34
@@ -51,9 +53,27 @@ public class Game {
     private int thread;
 
     /**
-     * 不抢地主数
+     * 选择不出牌数：最大2
+     */
+    private int noSendCardCount;
+
+    /**
+     * 不抢地主数:最大3
      */
     private int noChooseLandLord;
 
+    /**
+     * 当前出牌玩家
+     */
+    private Player currPlayer;
 
+    /**
+     * 当前出牌
+     */
+    private List<GameCardVo> currCard;
+
+    /**
+     * 当前出牌的牌型
+     */
+    private SendCardType currSendCardType;
 }
