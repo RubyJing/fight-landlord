@@ -43,7 +43,7 @@ public class StartLicensingOrder extends AbstractOrder implements Order {
                     game.getPlayers().get(index).setId(i);
                     imageService.addSubscript(game.getPlayers().get(index).getCards());
                     OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(),game.getPlayers().get(index).getQqNum()
-                            , imageService.gameCardsImage(game.getPlayers().get(index).getCards())));
+                            , imageService.gameCardsImage(game.getPlayers().get(index).getCards(),true)));
                 }
                 game.getGroupQueue().put("begin");
             }

@@ -16,12 +16,14 @@ public class Invoker {
 
     private ChooseRoleOrder chooseRoleOrder;
     private StartLicensingOrder startLicensingOrder;
+    private SendCardOrder sendCardOrder;
 
     public Invoker(Game game, long playerQq, String message) {
         this.game = game;
         this.message = message;
         startLicensingOrder = new StartLicensingOrder(game, playerQq, message);
         chooseRoleOrder = new ChooseRoleOrder(game, playerQq, message);
+        sendCardOrder = new SendCardOrder(game,playerQq,message);
     }
 
     public void execute() {
@@ -35,6 +37,7 @@ public class Invoker {
                 chooseRoleOrder.execute();
                 break;
             default:
+                sendCardOrder.execute();
         }
     }
 

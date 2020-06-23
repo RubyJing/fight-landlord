@@ -59,13 +59,16 @@ public class ChooseRoleOrder extends AbstractOrder implements Order {
                 if (chooseRole && playerQq == currPlayer.getQqNum()) {
                     if ("是".equals(order)) {
                         OutputInfo.messageQueue.put(new Response(game.getGroupId(), super.playerQq,
-                                "显示最后三张牌：" + imageService.gameCardsImage(game.getCards())));
+                                "显示最后三张牌：" + imageService.gameCardsImage(game.getCards(),false)));
                         robotService.getLandLord(game, super.playerQq);
                         imageService.addSubscript(currPlayer.getCards());
                         OutputInfo.messageQueue.put(new Response(game.getGroupId(), super.playerQq,
                                 currPlayer.getPlayerName() + "成为地主"));
+                        OutputInfo.messageQueue.put(new Response(game.getGroupId(), super.playerQq,
+                               "等待地主出牌"));
                         OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(), super.playerQq, "您的角色是地主："));
-                        OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(), super.playerQq, imageService.gameCardsImage(currPlayer.getCards())));
+                        OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(), super.playerQq, imageService.gameCardsImage(currPlayer.getCards(),true)));
+                        OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(), super.playerQq, "请输入键盘符号出牌(字母大写)"));
                     } else if ("否".equals(order)) {
                         currPlayer.setRole(new Farmer());
                         game.setNoChooseLandLord(game.getNoChooseLandLord() + 1);
