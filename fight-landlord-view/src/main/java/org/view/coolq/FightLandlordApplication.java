@@ -5,6 +5,7 @@ import cc.moecraft.icq.PicqBotX;
 import cc.moecraft.icq.PicqConfig;
 import org.view.coolq.listener.CoolGroupListener;
 import org.view.coolq.listener.CoolPrivateListener;
+import org.view.coolq.listener.EventLocalException;
 
 /**
  * 斗地主QQ启动类
@@ -13,6 +14,9 @@ import org.view.coolq.listener.CoolPrivateListener;
  * @date 2020/6/8 14:26
  */
 public class FightLandlordApplication {
+
+
+
     public static void main(String[] args) {
         // 创建机器人配置 ( 传入Picq端口 )
         PicqConfig config = new PicqConfig(31092);
@@ -22,8 +26,8 @@ public class FightLandlordApplication {
         bot.addAccount("fight-landlord", "127.0.0.1", 31091);
 
         // 注册事件监听器, 可以注册多个监听器
-        bot.getEventManager().registerListeners(new CoolPrivateListener(),new CoolGroupListener());
-        CardFactory cardFactory = new CardFactory();
+        bot.getEventManager().registerListeners(new CoolPrivateListener(),new CoolGroupListener(),new EventLocalException());
+        new CardFactory();
         bot.startBot();
 
     }
