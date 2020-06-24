@@ -96,28 +96,33 @@ public class CoolGroupListener extends IcqListener {
     private void joinGame(EventGroupMessage eventGroupMessage) {
         if ("0".equals(eventGroupMessage.getMessage())) {
             if (games != null && games.size() != 0) {
-                for (Game game : games) {
-                    if (game.getGroupId().equals(eventGroupMessage.getGroupId())) {
-                        List<Player> players = game.getPlayers();
-                        Player player = new Player();
-                        player.setQqNum(eventGroupMessage.getSender().getId());
-                        player.setPlayerName(eventGroupMessage.getSender().getInfo().getNickname());
-                        players.add(player);
-                        if (players.size() == 3) {
-                            try {
-                                game.getGroupQueue().put("licensing");
-                                eventGroupMessage.respond("人数已满，对局开始");
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                //判断玩家是否已在对局中
+                if (GamePool.getPlayerByPlayerQq(eventGroupMessage.getSender().getId()) == null) {
+                    for (Game game : games) {
+                        if (game.getGroupId().equals(eventGroupMessage.getGroupId())) {
+                            List<Player> players = game.getPlayers();
+                            Player player = new Player();
+                            player.setQqNum(eventGroupMessage.getSender().getId());
+                            player.setPlayerName(eventGroupMessage.getSender().getInfo().getNickname());
+                            players.add(player);
+                            if (players.size() == 3) {
+                                try {
+                                    game.getGroupQueue().put("licensing");
+                                    eventGroupMessage.respond("人数已满，对局开始");
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                game.setIsStart(true);
+                                GamePool.addGame(game);
                             }
-                            game.setIsStart(true);
-                            GamePool.addGame(game);
-                        }
-                        if (players.size() > 3) {
-                            eventGroupMessage.respond("抱歉，游戏人数已满，无法加入对局");
-                            return;
+                            if (players.size() > 3) {
+                                eventGroupMessage.respond("抱歉，游戏人数已满，无法加入对局");
+                                return;
+                            }
                         }
                     }
+                } else {
+                    eventGroupMessage.respond("抱歉，" + eventGroupMessage.getSender().getInfo().getNickname() + "已加入其他对局无法重复加入");
                 }
             }
         }
