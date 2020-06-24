@@ -75,6 +75,7 @@ public class SendCardOrder extends AbstractOrder implements Order {
                             } else {
                                 //对局结束
                                 game.setIsStart(false);
+                                GamePool.removeGame(game);
                             }
                         }
                     }
@@ -96,15 +97,15 @@ public class SendCardOrder extends AbstractOrder implements Order {
      */
     private boolean sendCards(Player player) throws InterruptedException {
         String deskCard = playService.playerSendCard(game, playerQq, message);
-        OutputInfo.messageQueue.put(new Response(game.getGroupId(), null,
-                player.getPlayerName() + "(" + player.getRole().getRoleName() + ")出牌：\n"
-                        + deskCard));
         List<GameCardVo> gameCardVos = playService.getAllNotHitCards(player.getCards());
+        OutputInfo.messageQueue.put(new Response(game.getGroupId(), null,
+                player.getPlayerName() + "(" + player.getRole().getRoleName() + ")出牌--剩" + gameCardVos.size() + "张：\n"
+                        + deskCard));
         boolean isEnd = false;
-        if (gameCardVos == null || gameCardVos.size() == 0) {
+        if (gameCardVos.size() == 0) {
             isEnd = true;
             OutputInfo.messageQueue.put(new Response(game.getGroupId(), null,
-                    "=========对局结束" + player.getRole() + "获得胜利========"));
+                    "=========对局结束" + player.getRole().getRoleName() + "获得胜利========"));
         } else {
             OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(), playerQq
                     , "您的手牌：\n" + imageService.sendCardImage(playService.getAllNotHitCards(player.getCards()))));
@@ -120,7 +121,5 @@ public class SendCardOrder extends AbstractOrder implements Order {
                 "正在等待玩家" + gameCurrPlayer.getPlayerName() + "(" + gameCurrPlayer.getRole().getRoleName() + ")" + "出牌"));
         OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(), gameCurrPlayer.getQqNum()
                 , "是否出牌 ? 不出牌输入大写Z，如出牌请根据键盘按键(字母大写)出牌："));
-        OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(), playerQq
-                , "您的手牌：\n" + imageService.sendCardImage(playService.getAllNotHitCards(gameCurrPlayer.getCards()))));
     }
 }
