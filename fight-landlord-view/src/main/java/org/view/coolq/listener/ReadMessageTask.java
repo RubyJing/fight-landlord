@@ -1,7 +1,5 @@
 package org.view.coolq.listener;
 
-import cc.moecraft.icq.event.events.message.EventGroupMessage;
-import cc.moecraft.icq.event.events.message.EventMessage;
 import entity.Game;
 import org.view.coolq.controller.order.Invoker;
 import org.view.coolq.entity.PrivateMessage;
