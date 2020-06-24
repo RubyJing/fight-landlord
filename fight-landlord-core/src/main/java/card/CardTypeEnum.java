@@ -1,6 +1,5 @@
 package card;
 
-import lombok.Getter;
 
 /**
  * 牌类型
@@ -8,7 +7,6 @@ import lombok.Getter;
  * @version 1.0
  * @date 2020/6/10 14:46
  */
-@Getter
 public enum  CardTypeEnum {
     /**
      * 红桃
@@ -36,5 +34,9 @@ public enum  CardTypeEnum {
 
     CardTypeEnum(Long id) {
         this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

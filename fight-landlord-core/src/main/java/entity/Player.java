@@ -13,8 +13,6 @@ import java.util.List;
  * @version 1.0
  * @date 2020/6/9 17:07
  */
-@Data
-@NoArgsConstructor
 public class Player {
     /**
      * 牌桌位置：1-2,2-3,3-1
@@ -40,4 +38,55 @@ public class Player {
      * 卡牌
      */
     private List<GameCardVo> cards;
+
+    public Player() {
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public long getQqNum() {
+        return qqNum;
+    }
+
+    public void setQqNum(long qqNum) {
+        this.qqNum = qqNum;
+    }
+
+    public boolean isBuddy() {
+        return isBuddy;
+    }
+
+    public void setBuddy(boolean buddy) {
+        isBuddy = buddy;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public List<GameCardVo> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<GameCardVo> cards) {
+        this.cards = cards;
+    }
 }

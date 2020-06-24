@@ -1,6 +1,5 @@
 package entity;
 
-import lombok.Data;
 
 
 /**
@@ -10,7 +9,6 @@ import lombok.Data;
  * @version 1.0
  * @date 2020/6/10 11:54
  */
-@Data
 public class GameCardVo {
 
     private int id;
@@ -40,4 +38,64 @@ public class GameCardVo {
      * 是否打出
      */
     private Boolean isHit = false;
+
+    public GameCardVo(int id, CardType cardType, Card card, String subscript, String subscriptValue, Boolean isHit) {
+        this.id = id;
+        this.cardType = cardType;
+        this.card = card;
+        this.subscript = subscript;
+        this.subscriptValue = subscriptValue;
+        this.isHit = isHit;
+    }
+
+    public GameCardVo() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public CardType getCardType() {
+        return cardType;
+    }
+
+    public void setCardType(CardType cardType) {
+        this.cardType = cardType;
+    }
+
+    public Card getCard() {
+        return card;
+    }
+
+    public void setCard(Card card) {
+        this.card = card;
+    }
+
+    public String getSubscript() {
+        return subscript;
+    }
+
+    public void setSubscript(String subscript) {
+        this.subscript = subscript;
+    }
+
+    public String getSubscriptValue() {
+        return subscriptValue;
+    }
+
+    public void setSubscriptValue(String subscriptValue) {
+        this.subscriptValue = subscriptValue;
+    }
+
+    public Boolean getIsHit() {
+        return isHit;
+    }
+
+    public void setIsHit(Boolean isHit) {
+        isHit = isHit;
+    }
 }
