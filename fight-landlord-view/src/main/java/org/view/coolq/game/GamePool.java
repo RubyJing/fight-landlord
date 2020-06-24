@@ -3,10 +3,8 @@ package org.view.coolq.game;
 import cc.moecraft.icq.event.events.message.EventGroupMessage;
 import entity.Game;
 import entity.Player;
-import org.view.coolq.entity.GameCurrPlayer;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -21,11 +19,6 @@ public class GamePool {
      * 对局缓存池
      */
     public static List<Game> games = new ArrayList<>();
-
-    /**
-     * 对局当前操作者缓存池
-     */
-    public static List<GameCurrPlayer> currPlayers = new ArrayList<>();
 
     /**
      * 群消息
@@ -70,46 +63,21 @@ public class GamePool {
         return null;
     }
 
-    /**
-     * 获取当前群当前操作玩家
-     *
-     * @param groupId 群qq
-     * @return GameCurrPlayer
-     */
-    public static Player getCurrPlayer(Long groupId) {
-        if (currPlayers != null && currPlayers.size() != 0) {
-            for (GameCurrPlayer currPlayer : currPlayers) {
-                if (currPlayer.getGroupId() == groupId) {
-                    return currPlayer.getCurrPlayer();
-                }
-            }
-        }
-        return null;
-    }
 
     /**
-     * 新增/修改 群对局当前操作玩家
-     *
-     * @param player  玩家
-     * @param groupId 群qq
+     * 移除对局
+     * @param game 游戏对局
      */
-    public static void addOrUpdateGameCurrPlayer(Player player, Long groupId) {
-        if (currPlayers.size() == 0) {
-            currPlayers.add(new GameCurrPlayer(groupId, player));
-        } else {
-            boolean isHave = false;
-            for (GameCurrPlayer currPlayer : currPlayers) {
-                if (currPlayer.getGroupId() == groupId) {
-                    currPlayer.setCurrPlayer(player);
-                    isHave = true;
-                    break;
+    public static void removeGame(Game game) {
+        if (games != null && games.size() != 0) {
+            if (games.iterator().hasNext()) {
+                if (games.iterator().next().getGroupId().equals(game.getGroupId())) {
+                    games.remove(game);
                 }
-            }
-            if (!isHave) {
-                currPlayers.add(new GameCurrPlayer(groupId, player));
             }
         }
     }
+
 
     /**
      * 获取对局
@@ -119,9 +87,8 @@ public class GamePool {
      */
     public static Game getGame(Long groupId) {
         if (games != null && games.size() != 0) {
-            Iterator<Game> gameIterator = games.iterator();
-            while (gameIterator.hasNext()) {
-                if (gameIterator.next().getGroupId().equals(groupId)) {
+            for (Game game : games) {
+                if (game.getGroupId().equals(groupId)) {
                     return games.iterator().next();
                 }
             }
@@ -135,13 +102,7 @@ public class GamePool {
      * @param game 对局
      */
     public static void addGame(Game game) {
-        if (games != null && games.size() != 0) {
-            if (games.iterator().hasNext()) {
-                if (games.iterator().next().getGroupId().equals(game.getGroupId())) {
-                    games.remove(game);
-                }
-            }
-        }
+        removeGame(game);
         assert games != null;
         games.add(game);
     }

@@ -3,7 +3,6 @@ package org.view.coolq.controller.order;
 import entity.Game;
 import entity.Player;
 import org.view.coolq.entity.Response;
-import org.view.coolq.game.GamePool;
 import org.view.coolq.output.OutputInfo;
 import role.Farmer;
 import service.ImageService;
@@ -37,11 +36,11 @@ public class ChooseRoleOrder extends AbstractOrder implements Order {
             List<Player> players = game.getPlayers();
             for (Player e : players) {
                 if (e.getRole() == null) {
-                    GamePool.addOrUpdateGameCurrPlayer(e, game.getGroupId());
+                    game.setCurrPlayer(e);
                     break;
                 }
             }
-            Player currPlayer = GamePool.getCurrPlayer(game.getGroupId());
+            Player currPlayer = game.getCurrPlayer();
             //开头询问
             if ("begin".equals(order)) {
                 assert currPlayer != null;
@@ -59,15 +58,16 @@ public class ChooseRoleOrder extends AbstractOrder implements Order {
                 if (chooseRole && playerQq == currPlayer.getQqNum()) {
                     if ("是".equals(order)) {
                         OutputInfo.messageQueue.put(new Response(game.getGroupId(), super.playerQq,
-                                "显示最后三张牌：" + imageService.gameCardsImage(game.getCards(),false)));
+                                "显示最后三张牌：" + imageService.gameCardsImage(game.getCards(), false)));
                         robotService.getLandLord(game, super.playerQq);
                         imageService.addSubscript(currPlayer.getCards());
                         OutputInfo.messageQueue.put(new Response(game.getGroupId(), super.playerQq,
                                 currPlayer.getPlayerName() + "成为地主"));
                         OutputInfo.messageQueue.put(new Response(game.getGroupId(), super.playerQq,
-                               "等待地主出牌"));
+                                "等待地主出牌"));
                         OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(), super.playerQq, "您的角色是地主："));
-                        OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(), super.playerQq, imageService.gameCardsImage(currPlayer.getCards(),true)));
+                        OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(), super.playerQq, "您的手牌：\n"
+                                + imageService.gameCardsImage(currPlayer.getCards(), true)));
                         OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(), super.playerQq, "请输入键盘符号出牌(字母大写)"));
                     } else if ("否".equals(order)) {
                         currPlayer.setRole(new Farmer());
