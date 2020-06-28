@@ -51,12 +51,12 @@ public class GameTest {
         System.out.println("\n地主的牌是：");
         imageService.addSubscript(players.get(0).getCards());
         System.out.println(imageService.gameCardsImage(players.get(0).getCards(), true));
-        while (playService.getAllNotHitCards(players.get(0).getCards()).size() != 0) {
+        while (true){
             System.out.print("选择出牌：");
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine();
-            if (playService.isKeyBoardsInputLegal(game,playService.getAllNotHitCards(players.get(0).getCards()), input)) {
-                Print.PN("场上" + players.get(0).getPlayerName() + "打出：",Print.GREEN);
+            if (playService.isKeyBoardsInputLegal(game, playService.getAllNotHitCards(players.get(0).getCards()), input)) {
+                Print.PN("场上" + players.get(0).getPlayerName() + "打出：", Print.GREEN);
                 Print.PN(playService.playerSendCard(game, 1, input), Print.RED, Print.REVERSE);
                 System.out.println("您的手牌:");
                 List<GameCardVo> gameCardVos = playService.getAllNotHitCards(players.get(0).getCards());
@@ -69,7 +69,6 @@ public class GameTest {
                 System.out.println("输入格式错误");
             }
         }
-
 
     }
 }

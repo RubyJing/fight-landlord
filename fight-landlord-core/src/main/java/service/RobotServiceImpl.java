@@ -3,7 +3,6 @@ package service;
 import entity.Game;
 import entity.GameCardVo;
 import entity.Player;
-import lombok.extern.slf4j.Slf4j;
 import role.Farmer;
 import role.LandLord;
 
@@ -17,7 +16,6 @@ import java.util.Random;
  * @version 1.0
  * @date 2020/6/10 13:59
  */
-@Slf4j
 public class RobotServiceImpl implements RobotService {
 
     @Override

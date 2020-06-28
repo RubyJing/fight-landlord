@@ -18,7 +18,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <org.lombok.version>1.18.8</org.lombok.version>
         <junit>4.12</junit>
         <org.reflections>0.9.11</org.reflections>
         <org.slf4j>1.7.26</org.slf4j>
@@ -26,13 +25,6 @@
     </properties>
 
     <dependencies>
-        <!--使用 lombok 简化 Java 代码-->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${org.lombok.version}</version>
-            <scope>compile</scope>
-        </dependency>
         <!-- 测试 -->
         <dependency>
             <groupId>junit</groupId>

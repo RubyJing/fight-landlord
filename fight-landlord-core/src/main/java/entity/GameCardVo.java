@@ -95,7 +95,7 @@ public class GameCardVo {
         return isHit;
     }
 
-    public void setIsHit(Boolean isHit) {
-        isHit = isHit;
+    public void setIsHit(Boolean hit) {
+        isHit = hit;
     }
 }

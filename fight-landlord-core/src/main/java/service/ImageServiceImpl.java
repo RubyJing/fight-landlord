@@ -2,7 +2,7 @@ package service;
 
 import card.CardConstant;
 import entity.GameCardVo;
-import lombok.extern.slf4j.Slf4j;
+
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * @date 2020/6/11 11:23
  */
 
-@Slf4j
+
 public class ImageServiceImpl implements ImageService {
     @Override
     public String gameCardImage(GameCardVo gameCardVo,boolean subscript) {

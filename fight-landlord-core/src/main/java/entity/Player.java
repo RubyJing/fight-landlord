@@ -1,7 +1,6 @@
 package entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
 import role.Role;
 
 import java.util.List;
