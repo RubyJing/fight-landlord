@@ -27,11 +27,25 @@ import java.util.concurrent.Executors;
 @Slf4j
 public class CoolGroupListener extends IcqListener {
 
-    private List<Game> games = new ArrayList<>();
+    private static List<Game> games = new ArrayList<>();
     private String robotName;
 
 
     public static ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+
+    /**
+     * 移除游戏
+     *
+     * @param groupId QQ群
+     */
+    public static void removeGame(long groupId) {
+        if (games.size() != 0) {
+            games.removeIf(game -> game.getGroupId() == groupId);
+            if (games.size() == 0) {
+                cachedThreadPool.isTerminated();
+            }
+        }
+    }
 
     @EventHandler
     public void groupMessage(EventGroupMessage message) {

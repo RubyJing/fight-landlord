@@ -6,6 +6,7 @@ import entity.Player;
 import org.view.coolq.entity.PrivateMessage;
 import org.view.coolq.entity.Response;
 import org.view.coolq.game.GamePool;
+import org.view.coolq.listener.CoolGroupListener;
 import org.view.coolq.output.InputInfo;
 import org.view.coolq.output.OutputInfo;
 import service.*;
@@ -57,18 +58,7 @@ public class SendCardOrder extends AbstractOrder implements Order {
                 } else if (currPlayer != null) {
                     if (playerQq == gameCurrPlayer.getQqNum()) {
                         if ("Z".equals(message) && gameCurrPlayer.getQqNum() == playerQq) {
-                            playService.noSendCard(game);
-                            OutputInfo.messageQueue.put(new Response(game.getGroupId(), null,
-                                    player.getPlayerName() + "(" + player.getRole().getRoleName() + ")选择不要"));
-
-                            if (game.getNoSendCardCount() == 2) {
-                                game.setCurrCard(null);
-                                game.setCurrSendCardType(null);
-                                OutputInfo.messageQueue.put(new Response(game.getGroupId(), null,
-                                        "玩家" + currPlayer.getPlayerName() + "(" + currPlayer.getRole().getRoleName() + ")请出牌"));
-                            } else {
-                                InputInfo.messageQueue.put(new PrivateMessage(game, gameCurrPlayer.getQqNum(), "Continue"));
-                            }
+                            this.noSendCards(player, currPlayer, gameCurrPlayer);
                         } else {
                             if (!sendCards(gameCurrPlayer)) {
                                 InputInfo.messageQueue.put(new PrivateMessage(game, gameCurrPlayer.getQqNum(), "Continue"));
@@ -86,9 +76,28 @@ public class SendCardOrder extends AbstractOrder implements Order {
             } else {
                 OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(), playerQq
                         , "输入不合法"));
+                this.showPlayerHaveCards(player);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * 不出牌
+     */
+    private void noSendCards(Player player, Player currPlayer, Player gameCurrPlayer) throws InterruptedException {
+        playService.noSendCard(game);
+        OutputInfo.messageQueue.put(new Response(game.getGroupId(), null,
+                player.getPlayerName() + "(" + player.getRole().getRoleName() + ")选择不要"));
+        this.showPlayerHaveCards(player);
+        if (game.getNoSendCardCount() == 2) {
+            game.setCurrCard(null);
+            game.setCurrSendCardType(null);
+            OutputInfo.messageQueue.put(new Response(game.getGroupId(), null,
+                    "玩家" + currPlayer.getPlayerName() + "(" + currPlayer.getRole().getRoleName() + ")请出牌"));
+        } else {
+            InputInfo.messageQueue.put(new PrivateMessage(game, gameCurrPlayer.getQqNum(), "Continue"));
         }
     }
 
@@ -106,9 +115,9 @@ public class SendCardOrder extends AbstractOrder implements Order {
             isEnd = true;
             OutputInfo.messageQueue.put(new Response(game.getGroupId(), null,
                     "=========对局结束" + player.getRole().getRoleName() + "获得胜利========"));
+            CoolGroupListener.removeGame(game.getGroupId());
         } else {
-            OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(), playerQq
-                    , "您的手牌：\n" + imageService.sendCardImage(playService.getAllNotHitCards(player.getCards()))));
+            this.showPlayerHaveCards(player);
         }
         return isEnd;
     }
@@ -121,5 +130,13 @@ public class SendCardOrder extends AbstractOrder implements Order {
                 "正在等待玩家" + gameCurrPlayer.getPlayerName() + "(" + gameCurrPlayer.getRole().getRoleName() + ")" + "出牌"));
         OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(), gameCurrPlayer.getQqNum()
                 , "是否出牌 ? 不出牌输入大写Z，如出牌请根据键盘按键(字母大写)出牌："));
+    }
+
+    /**
+     * 展示玩家手牌
+     */
+    private void showPlayerHaveCards(Player player) throws InterruptedException {
+        OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(), playerQq
+                , "您的手牌：\n" + imageService.sendCardImage(playService.getAllNotHitCards(player.getCards()))));
     }
 }
