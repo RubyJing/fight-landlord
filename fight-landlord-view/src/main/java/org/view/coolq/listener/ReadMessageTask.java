@@ -27,13 +27,13 @@ public class ReadMessageTask implements Runnable {
         while (true) {
             String message = game.getGroupQueue().poll();
             if (message != null) {
-                Invoker invoker = new Invoker(game, GamePool.eventGroupMessage.getSenderId(), message);
+                Invoker invoker = new Invoker(false,game, GamePool.eventGroupMessage.getSenderId(), message);
                 invoker.execute();
             }
 
             PrivateMessage privateMessage = InputInfo.messageQueue.poll();
             if (privateMessage != null) {
-                Invoker invoker = new Invoker(privateMessage.getGame(), privateMessage.getPlayerQq(), privateMessage.getMessage());
+                Invoker invoker = new Invoker(true,privateMessage.getGame(), privateMessage.getPlayerQq(), privateMessage.getMessage());
                 invoker.execute();
             }
 

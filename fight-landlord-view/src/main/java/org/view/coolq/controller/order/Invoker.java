@@ -13,31 +13,39 @@ public class Invoker {
 
     private Game game;
     private String message;
+    private Boolean isPrivate;
 
     private ChooseRoleOrder chooseRoleOrder;
     private StartLicensingOrder startLicensingOrder;
     private SendCardOrder sendCardOrder;
 
-    public Invoker(Game game, long playerQq, String message) {
+    public Invoker(Boolean isPrivate, Game game, long playerQq, String message) {
+        this.isPrivate = isPrivate;
         this.game = game;
         this.message = message;
-        startLicensingOrder = new StartLicensingOrder(game, playerQq, message);
-        chooseRoleOrder = new ChooseRoleOrder(game, playerQq, message);
-        sendCardOrder = new SendCardOrder(game,playerQq,message);
+        if (isPrivate) {
+            sendCardOrder = new SendCardOrder(game, playerQq, message);
+        } else {
+            startLicensingOrder = new StartLicensingOrder(game, playerQq, message);
+            chooseRoleOrder = new ChooseRoleOrder(game, playerQq, message);
+        }
     }
 
     public void execute() {
-        switch (message) {
-            case "licensing":
-                startLicensingOrder.execute();
-                break;
-            case "begin":
-            case "是":
-            case "否":
-                chooseRoleOrder.execute();
-                break;
-            default:
-                sendCardOrder.execute();
+        if (isPrivate) {
+            sendCardOrder.execute();
+        } else {
+            switch (message) {
+                case "licensing":
+                    startLicensingOrder.execute();
+                    break;
+                case "begin":
+                case "是":
+                case "否":
+                    chooseRoleOrder.execute();
+                    break;
+                default:
+            }
         }
     }
 
