@@ -87,7 +87,7 @@ public class PlayServiceImpl implements PlayService {
 
     @Override
     public boolean isFightLandlordRule(Game game, List<GameCardVo> gameCardVos, String keyBoards) {
-        String[] input = keyBoards.trim().split("");
+        String[] input = keyBoards.toUpperCase().trim().split("");
         if (input.length == 0) {
             return true;
         }
@@ -179,7 +179,7 @@ public class PlayServiceImpl implements PlayService {
         List<Card> currCard = new ArrayList<>();
         for (String s : input) {
             for (GameCardVo card : playerCardsVos) {
-                if (card.getSubscriptValue().equals(s)) {
+                if (card.getSubscriptValue().equals(s.toUpperCase())) {
                     card.setSubscriptValue("");
                     card.setIsHit(true);
                     isHitVos.add(card);
