@@ -193,6 +193,9 @@ public class PlayServiceImpl implements PlayService {
         game.setCurrCard(isHitVos);
         game.setCurrSendCardType(sendCardFactory.isFightLandlordCardRule(currCard));
         game.setNoSendCardCount(0);
-        return game.getCurrSendCardType().getName() + "：" + imageService.gameCardsImage(game.getCurrCard(), false);
+
+        return game.getCurrSendCardType().getName()
+                + "："
+                + imageService.gameCardsImage(game.getCurrCard().stream().sorted(Comparator.comparingInt(e -> e.getCard().getCardNum())).collect(Collectors.toList()), false);
     }
 }
