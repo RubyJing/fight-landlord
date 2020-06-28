@@ -223,7 +223,8 @@ public class SendCardFactory {
         if (cards == null || cards.size() == 0) {
             return null;
         }
-
+        //排序
+        cards = cards.stream().sorted(Comparator.comparingInt(Card::getCardNum)).collect(Collectors.toList());
         //一张牌
         if (cards.size() == SendCardType.ONE.getCardNum()) {
             return SendCardType.ONE;
