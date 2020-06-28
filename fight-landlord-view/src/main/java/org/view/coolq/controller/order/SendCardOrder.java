@@ -31,12 +31,12 @@ public class SendCardOrder extends AbstractOrder implements Order {
 
     @Override
     public void execute() {
-        String message = getMessage();
+        String message = getMessage().toUpperCase();
         Player player = GamePool.getPlayerByPlayerQq(playerQq);
         assert player != null;
         try {
             if ("Z".equals(message)
-                    || "Continue".equals(message)
+                    || "CONTINUE".equals(message)
                     || playService.isKeyBoardsInputLegal(game, playService.getAllNotHitCards(player.getCards()), message)) {
                 //当前已出牌玩家
                 Player currPlayer = game.getCurrPlayer();
@@ -61,7 +61,7 @@ public class SendCardOrder extends AbstractOrder implements Order {
                             this.noSendCards(player, currPlayer, gameCurrPlayer);
                         } else {
                             if (!sendCards(gameCurrPlayer)) {
-                                InputInfo.messageQueue.put(new PrivateMessage(game, gameCurrPlayer.getQqNum(), "Continue"));
+                                InputInfo.messageQueue.put(new PrivateMessage(game, gameCurrPlayer.getQqNum(), "CONTINUE"));
                             } else {
                                 //对局结束
                                 game.setIsStart(false);
@@ -69,7 +69,7 @@ public class SendCardOrder extends AbstractOrder implements Order {
                             }
                         }
                     }
-                    if ("Continue".equals(message)) {
+                    if ("CONTINUE".equals(message)) {
                         askWhetherToPlayCards(gameCurrPlayer);
                     }
                 }
@@ -97,7 +97,7 @@ public class SendCardOrder extends AbstractOrder implements Order {
             OutputInfo.messageQueue.put(new Response(game.getGroupId(), null,
                     "玩家" + currPlayer.getPlayerName() + "(" + currPlayer.getRole().getRoleName() + ")请出牌"));
         } else {
-            InputInfo.messageQueue.put(new PrivateMessage(game, gameCurrPlayer.getQqNum(), "Continue"));
+            InputInfo.messageQueue.put(new PrivateMessage(game, gameCurrPlayer.getQqNum(), "CONTINUE"));
         }
     }
 
@@ -114,7 +114,9 @@ public class SendCardOrder extends AbstractOrder implements Order {
         if (gameCardVos.size() == 0) {
             isEnd = true;
             OutputInfo.messageQueue.put(new Response(game.getGroupId(), null,
-                    "=========对局结束" + player.getRole().getRoleName() + "获得胜利========"));
+                    "=========对局结束," + player.getRole().getRoleName() + "获得胜利========"));
+            OutputInfo.messageQueue.put(new Response(game.getGroupId(), null,
+                    "=========斗地主程序关闭。可通过输入“斗地主启动”再次唤醒游戏========="));
             CoolGroupListener.removeGame(game.getGroupId());
         } else {
             this.showPlayerHaveCards(player);
@@ -129,7 +131,7 @@ public class SendCardOrder extends AbstractOrder implements Order {
         OutputInfo.messageQueue.put(new Response(game.getGroupId(), null,
                 "正在等待玩家" + gameCurrPlayer.getPlayerName() + "(" + gameCurrPlayer.getRole().getRoleName() + ")" + "出牌"));
         OutputInfo.privateMessageQueue.put(new Response(game.getGroupId(), gameCurrPlayer.getQqNum()
-                , "是否出牌 ? 不出牌输入大写Z，如出牌请根据键盘按键(字母大写)出牌："));
+                , "是否出牌 ? 不出牌输入Z，如出牌请根据键盘按键出牌："));
     }
 
     /**
