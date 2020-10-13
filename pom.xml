@@ -18,7 +18,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <junit>4.12</junit>
+        <junit>4.13.1</junit>
         <org.reflections>0.9.11</org.reflections>
         <org.slf4j>1.7.26</org.slf4j>
         <dom4j>1.6.1</dom4j>
